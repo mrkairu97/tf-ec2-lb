@@ -59,7 +59,20 @@ resource "aws_instance" "ec2_instance" {
   iam_instance_profile   = aws_iam_instance_profile.test_profile.name
 
   tags = {
-    Name = "new-ec2-instance-tf"
+    Name = "new-ec2-instance-1-tf"
+  }
+}
+
+resource "aws_instance" "ec2_instance_2" {
+  user_data = file("install_site.sh")
+  ami = data.aws_ami.amazon_linux.id
+  instance_type = "t2.micro"
+  subnet_id = "subnet-4e03f128"
+  vpc_security_group_ids = [aws_security_group.allow_ports.id]
+  iam_instance_profile   = aws_iam_instance_profile.test_profile.name
+
+  tags = {
+    Name = "new-ec2-instance-2-tf"
   }
 }
 
@@ -70,6 +83,12 @@ resource "aws_lb_target_group" "test" {
   protocol    = "HTTPS"
   target_type = "instance"
   vpc_id      = "vpc-1e787179"
+}
+
+resource "aws_lb_target_group_attachment" "my-alb-target-group-attachment1" {
+  target_group_arn = aws_lb_target_group.test.arn
+  target_id        = aws_instance.ec2_instance_2.id
+  port             = 443
 }
 
 resource "aws_lb_target_group_attachment" "my-alb-target-group-attachment1" {
