@@ -13,15 +13,15 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: Assume Role in ${{ inputs.environment }}
-        uses: aws-actions/configure-aws-credentials@master
+        uses: aws-actions/configure-aws-credentials
         with:
           role-to-assume: ${{ vars.IR4ASSUMEROLE }}
           aws-region: ap-southeast-1
           role-session-name: githubActionSession
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
 
-      - uses: hashicorp/setup-terraform@v2
+      - uses: hashicorp/setup-terraform
 
       - name: Terraform format
         run: terraform fmt -check
