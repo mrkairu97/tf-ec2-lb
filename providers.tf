@@ -9,7 +9,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "ir4-terraform-state"
+    bucket = "backupreports-kairu97-poc"
     key    = "terraform/infra/lb_ec2.tfstate"
     region = "ap-southeast-1"
   }
